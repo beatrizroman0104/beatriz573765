@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Painel do bairro</title>
+    <link rel="stylesheet" th:href="@{/css/estilo.css}">
+</head>
+<body>
+<nav>
+    <a th:href="@{/}">Início</a>
+    <a th:href="@{/bairros}">Bairros</a>
+    <a th:href="@{/trechos}">Trechos</a>
+    <a th:href="@{/leituras}">Leituras</a>
+</nav>
+<h1 th:text="'Painel do bairro ' + ${bairroNome}">Painel do bairro</h1>
+<p>
+    Normal: <span th:text="${qtdNormal}"></span> |
+    Atenção: <span th:text="${qtdAtencao}"></span> |
+    Alerta: <span th:text="${qtdAlerta}"></span>
+</p>
+<table>
+    <tr>
+        <th>Trecho</th>
+        <th>Tipo de calçada</th>
+        <th>Altitude (m)</th>
+        <th>Última lâmina (cm)</th>
+        <th>Status</th>
+    </tr>
+    <tr th:each="i : ${itens}">
+        <td th:text="${i.logradouro}"></td>
+        <td th:text="${i.tipoCalcada}"></td>
+        <td th:text="${i.altitude}"></td>
+        <td th:text="${i.ultimaLamina != null} ? ${i.ultimaLamina} : '-'"></td>
+        <td th:text="${i.ultimoStatus != null} ? ${i.ultimoStatus} : '-'"></td>
+    </tr>
+</table>
+<p><a th:href="@{/bairros}">Voltar</a></p>
+</body>
+</html>

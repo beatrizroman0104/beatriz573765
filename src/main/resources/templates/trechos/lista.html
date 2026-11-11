@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Trechos</title>
+    <link rel="stylesheet" th:href="@{/css/estilo.css}">
+</head>
+<body>
+<nav>
+    <a th:href="@{/}">Início</a>
+    <a th:href="@{/bairros}">Bairros</a>
+    <a th:href="@{/trechos}">Trechos</a>
+    <a th:href="@{/leituras}">Leituras</a>
+</nav>
+<h1>Trechos</h1>
+<p class="ok" th:if="${mensagem}" th:text="${mensagem}"></p>
+<p class="erro" th:if="${erro}" th:text="${erro}"></p>
+<p><a th:href="@{/trechos/novo}">Novo trecho</a></p>
+<table>
+    <tr>
+        <th>Logradouro</th>
+        <th>Bairro</th>
+        <th>Tipo de calçada</th>
+        <th>Altitude (m)</th>
+        <th>Ações</th>
+    </tr>
+    <tr th:each="t : ${trechos}">
+        <td th:text="${t.logradouro}"></td>
+        <td th:text="${t.bairroNome}"></td>
+        <td th:text="${t.tipoCalcada}"></td>
+        <td th:text="${t.altitude}"></td>
+        <td>
+            <a th:href="@{/trechos/{id}/editar(id=${t.id})}">Editar</a>
+            <form class="inline" method="post" th:action="@{/trechos/{id}/excluir(id=${t.id})}"
+                  onsubmit="return confirm('Excluir?')">
+                <button type="submit">Excluir</button>
+            </form>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

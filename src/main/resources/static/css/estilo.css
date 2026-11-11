@@ -1,0 +1,9 @@
+body { font-family: Arial, sans-serif; margin: 24px; color: #1f2937; }
+nav a { margin-right: 12px; }
+table { border-collapse: collapse; margin: 12px 0; }
+th, td { border: 1px solid #999; padding: 6px 10px; text-align: left; }
+th { background: #e5e7eb; }
+label { display: block; margin-top: 10px; }
+form.inline { display: inline; }
+.erro { color: #b00020; }
+.ok { color: #1b7f3b; }

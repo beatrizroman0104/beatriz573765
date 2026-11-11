@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Leitura</title>
+    <link rel="stylesheet" th:href="@{/css/estilo.css}">
+</head>
+<body>
+<nav>
+    <a th:href="@{/}">Início</a>
+    <a th:href="@{/bairros}">Bairros</a>
+    <a th:href="@{/trechos}">Trechos</a>
+    <a th:href="@{/leituras}">Leituras</a>
+</nav>
+<h1>Leitura</h1>
+<p class="erro" th:if="${erro}" th:text="${erro}"></p>
+<form method="post" th:action="@{/leituras/salvar}" th:object="${leitura}">
+    <input type="hidden" th:field="*{id}">
+
+    <label>Trecho:
+        <select th:field="*{trechoId}">
+            <option value="">Selecione...</option>
+            <option th:each="t : ${trechos}" th:value="${t.id}"
+                    th:text="${t.logradouro + ' (' + t.bairroNome + ')'}"></option>
+        </select>
+    </label>
+    <div class="erro" th:errors="*{trechoId}"></div>
+
+    <label>Data e hora:
+        <input type="datetime-local" th:field="*{dataHora}">
+    </label>
+    <div class="erro" th:errors="*{dataHora}"></div>
+
+    <label>Lâmina (cm):
+        <input type="number" th:field="*{laminaCm}">
+    </label>
+    <div class="erro" th:errors="*{laminaCm}"></div>
+
+    <p>
+        <button type="submit">Salvar</button>
+        <a th:href="@{/leituras}">Cancelar</a>
+    </p>
+</form>
+</body>
+</html>

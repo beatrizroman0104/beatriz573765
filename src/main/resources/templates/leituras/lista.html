@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Leituras</title>
+    <link rel="stylesheet" th:href="@{/css/estilo.css}">
+</head>
+<body>
+<nav>
+    <a th:href="@{/}">Início</a>
+    <a th:href="@{/bairros}">Bairros</a>
+    <a th:href="@{/trechos}">Trechos</a>
+    <a th:href="@{/leituras}">Leituras</a>
+</nav>
+<h1>Leituras</h1>
+<p class="ok" th:if="${mensagem}" th:text="${mensagem}"></p>
+<p class="erro" th:if="${erro}" th:text="${erro}"></p>
+<p><a th:href="@{/leituras/novo}">Nova leitura</a></p>
+<table>
+    <tr>
+        <th>Data e hora</th>
+        <th>Trecho</th>
+        <th>Lâmina (cm)</th>
+        <th>Status</th>
+        <th>Ações</th>
+    </tr>
+    <tr th:each="l : ${leituras}">
+        <td th:text="${#temporals.format(l.dataHora, 'dd/MM/yyyy HH:mm')}"></td>
+        <td th:text="${l.trechoDescricao}"></td>
+        <td th:text="${l.laminaCm}"></td>
+        <td th:text="${l.status}"></td>
+        <td>
+            <a th:href="@{/leituras/{id}/editar(id=${l.id})}">Editar</a>
+            <form class="inline" method="post" th:action="@{/leituras/{id}/excluir(id=${l.id})}"
+                  onsubmit="return confirm('Excluir?')">
+                <button type="submit">Excluir</button>
+            </form>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

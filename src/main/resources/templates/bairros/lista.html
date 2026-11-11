@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Bairros</title>
+    <link rel="stylesheet" th:href="@{/css/estilo.css}">
+</head>
+<body>
+<nav>
+    <a th:href="@{/}">Início</a>
+    <a th:href="@{/bairros}">Bairros</a>
+    <a th:href="@{/trechos}">Trechos</a>
+    <a th:href="@{/leituras}">Leituras</a>
+</nav>
+<h1>Bairros</h1>
+<p class="ok" th:if="${mensagem}" th:text="${mensagem}"></p>
+<p class="erro" th:if="${erro}" th:text="${erro}"></p>
+<p><a th:href="@{/bairros/novo}">Novo bairro</a></p>
+<table>
+    <tr>
+        <th>Nome</th>
+        <th>Zona</th>
+        <th>Possui piscinão</th>
+        <th>Ações</th>
+    </tr>
+    <tr th:each="b : ${bairros}">
+        <td th:text="${b.nome}"></td>
+        <td th:text="${b.zona}"></td>
+        <td th:text="${b.possuiPiscinao} ? 'Sim' : 'Não'"></td>
+        <td>
+            <a th:href="@{/bairros/{id}/editar(id=${b.id})}">Editar</a>
+            <form class="inline" method="post" th:action="@{/bairros/{id}/excluir(id=${b.id})}"
+                  onsubmit="return confirm('Excluir?')">
+                <button type="submit">Excluir</button>
+            </form>
+            <a th:href="@{/bairros/{id}/painel(id=${b.id})}">Painel</a>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

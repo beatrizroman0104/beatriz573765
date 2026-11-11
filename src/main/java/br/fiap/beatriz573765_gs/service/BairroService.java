@@ -42,7 +42,7 @@ public class BairroService {
     @Transactional
     public void excluir(Long id){
         if (trechoRepo.existsByBairroId(id))
-            throw new IllegalStateException("Não é possível cadasreas o bairro porque ele possui trechos cadastrados.");
+            throw new IllegalStateException("Não é possível excluir o bairro porque ele possui trechos cadastrados.");
         repo.deleteById(id);
     }
 }

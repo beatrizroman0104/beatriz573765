@@ -18,42 +18,42 @@ import java.util.List;
 @Controller
 @RequestMapping("/trechos")
 public class TrechoController {
+    private static final List<String> TIPOS = List.of("Regular", "Irregular", "Escadaria", "Sem iluminação");
+
     private final TrechoService service;
     private final BairroService bairroService;
-    private final LeituraService leituraService;
 
-    public TrechoController(TrechoService service, BairroService bairroService,
-                            LeituraService leituraService) {
+    public TrechoController(TrechoService service, BairroService bairroService) {
         this.service = service;
         this.bairroService = bairroService;
-        this.leituraService = leituraService;
     }
 
     @GetMapping
     public String listar(Model model) {
-        carregarPagina(model, new BairroDTO(null, "", "", false),
-                new TrechoDTO(null, "", "", null, null, ""), novaLeitura());
-        return "index";
+        model.addAttribute("trechos", service.listar());
+        return "trechos/lista";
     }
 
     @GetMapping("/novo")
     public String novo(Model model) {
-        return listar(model);
+        model.addAttribute("trecho", new TrechoDTO(null, "", "", null, null, ""));
+        carregarFormulario(model);
+        return "trechos/form";
     }
 
     @GetMapping("/{id}/editar")
     public String editar(@PathVariable Long id, Model model) {
-        carregarPagina(model, new BairroDTO(null, "", "", false),
-                service.buscarPorId(id), novaLeitura());
-        return "index";
+        model.addAttribute("trecho", service.buscarPorId(id));
+        carregarFormulario(model);
+        return "trechos/form";
     }
 
     @PostMapping("/salvar")
     public String salvar(@Valid @ModelAttribute("trecho") TrechoDTO dto,
                          BindingResult resultado, Model model) {
         if (resultado.hasErrors()) {
-            carregarPagina(model, new BairroDTO(null, "", "", false), dto, novaLeitura());
-            return "index";
+            carregarFormulario(model);
+            return "trechos/form";
         }
         service.salvar(dto);
         return "redirect:/trechos";
@@ -65,29 +65,14 @@ public class TrechoController {
             service.excluir(id);
             return "redirect:/trechos";
         } catch (RuntimeException exception) {
-            carregarPagina(model, new BairroDTO(null, "", "", false),
-                    new TrechoDTO(null, "", "", null, null, ""), novaLeitura());
+            model.addAttribute("trechos", service.listar());
             model.addAttribute("erro", exception.getMessage());
-            return "index";
+            return "trechos/lista";
         }
     }
 
-    private void carregarPagina(Model model, BairroDTO bairro, TrechoDTO trecho, LeituraDTO leitura) {
+    private void carregarFormulario(Model model) {
         model.addAttribute("bairros", bairroService.listar());
-        model.addAttribute("trechos", service.listar());
-        model.addAttribute("leituras", leituraService.listar());
-        model.addAttribute("bairro", bairro);
-        model.addAttribute("trecho", trecho);
-        model.addAttribute("leitura", leitura);
-        model.addAttribute("zonas", List.of("Centro", "Norte", "Sul", "Leste", "Oeste"));
-        model.addAttribute("tipos", List.of("Regular", "Irregular", "Escadaria", "Sem iluminação"));
-        model.addAttribute("itens", List.of());
-        model.addAttribute("qtdNormal", 0);
-        model.addAttribute("qtdAtencao", 0);
-        model.addAttribute("qtdAlerta", 0);
-    }
-
-    private LeituraDTO novaLeitura() {
-        return new LeituraDTO(null, null, "", LocalDateTime.now().withSecond(0).withNano(0), null, "");
+        model.addAttribute("tipos", TIPOS);
     }
 }

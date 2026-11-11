@@ -30,4 +30,8 @@ public class PainelService {
                     ultimoStatus);
         }).toList();
     }
+
+    public long contarPorStatus(List<PainelItemDTO> itens, String status){
+        return itens.stream().filter(i -> status.equals(i.ultimoStatus())).count();
+    }
 }
